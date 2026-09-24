@@ -1072,9 +1072,14 @@ h3 {
 .resume-viewer.has-file .resume-fallback { display: none; }
 
 .contact {
+  background: var(--background);
+  color: var(--text);
+  padding: 120px 0;
+}
+
+[data-theme="dark"] .contact {
   background: #090e20;
   color: #fff;
-  padding: 120px 0;
 }
 
 .contact h2 {
@@ -1082,21 +1087,34 @@ h3 {
 }
 
 .contact .row > div > p {
-  color: #aebbd2;
+  color: var(--muted);
   line-height: 1.8;
+}
+
+[data-theme="dark"] .contact .row > div > p {
+  color: #aebbd2;
 }
 
 .opportunities { margin: 35px 0; }
 
 .opportunities > span {
   font: 0.65rem "DM Mono", monospace;
-  color: #72e6ef;
+  color: var(--accent-secondary);
   display: block;
   margin-bottom: 10px;
   text-transform: uppercase;
 }
 
+[data-theme="dark"] .opportunities > span {
+  color: #72e6ef;
+}
+
 .contact .chips span {
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .contact .chips span {
   border-color: rgba(255, 255, 255, 0.22);
   color: #dbe4f5;
 }
@@ -1107,39 +1125,62 @@ h3 {
   gap: 10px;
   font-size: 0.78rem;
   font-weight: 700;
+  color: var(--text);
+}
+
+[data-theme="dark"] .contact-links {
   color: #e3eaff;
 }
 
-.contact-links a:hover { color: #fff; }
+.contact-links a:hover { color: var(--accent); }
+
+[data-theme="dark"] .contact-links a:hover { color: #fff; }
 
 .contact form {
   display: grid;
   gap: 17px;
-  background: #10182c;
+  background: var(--surface);
   padding: 30px;
   border-radius: 15px;
   position: relative;
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .contact form {
+  background: #10182c;
+  border: none;
 }
 
 form label {
   font-size: 0.67rem;
   font-weight: 700;
-  color: #aebbd2;
+  color: var(--muted);
   display: grid;
   gap: 7px;
 }
 
+[data-theme="dark"] form label {
+  color: #aebbd2;
+}
+
 input,
 textarea {
-  background: #0a1020;
-  border: 1px solid #27334a;
+  background: var(--background);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: #fff;
+  color: var(--text);
   padding: 11px;
   font: inherit;
   font-size: 0.8rem;
   outline: none;
   width: 100%;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea {
+  background: #0a1020;
+  border: 1px solid #27334a;
+  color: #fff;
 }
 
 input:focus,
@@ -1161,11 +1202,18 @@ textarea:invalid:focus {
 .form-status {
   font-size: 0.75rem;
   margin: 0;
+  color: var(--muted);
+}
+
+[data-theme="dark"] .form-status {
   color: #aebbd2;
 }
 
-.form-status.success { color: #67e8a8; }
-.form-status.error { color: #fda4af; }
+.form-status.success { color: #2e7d32; }
+[data-theme="dark"] .form-status.success { color: #67e8a8; }
+
+.form-status.error { color: #c62828; }
+[data-theme="dark"] .form-status.error { color: #fda4af; }
 
 footer {
   background: #090e20;

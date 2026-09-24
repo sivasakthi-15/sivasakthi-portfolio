@@ -1,57 +1,63 @@
 (() => {
-  const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
-  const EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
-  const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
-  const configured = EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY';
-  const EMAIL = 'sivasakthiramasamy03@gmail.com';
+  const EMAILJS_PUBLIC_KEY = '-QS9sU_CILZe6pm7T';
+  const EMAILJS_SERVICE_ID = 'service_1tk4nb8';
+  const EMAILJS_TEMPLATE_ID = 'template_q0u0d56';
+  const configured = true;
 
-  if (configured) emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  if (configured) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
 
   const form = document.getElementById('contact-form');
   const status = form.querySelector('.form-status');
   const button = form.querySelector('button[type="submit"]');
+  const originalButtonHTML = button.innerHTML;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     status.className = 'form-status';
     status.textContent = '';
 
-    if (form.website.value) {
+    // Validate required fields and email
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    // Check honeypot
+    if (form.website && form.website.value) {
       status.textContent = 'Unable to send message.';
       status.classList.add('error');
       return;
     }
 
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      status.textContent = 'Please complete the required fields.';
-      status.classList.add('error');
-      return;
-    }
+    // Disable button and change text
+    button.disabled = true;
+    button.textContent = 'Sending...';
 
     if (!configured) {
-      const subject = encodeURIComponent(form.subject.value);
-      const body = encodeURIComponent(`${form.message.value}\n\n— ${form.from_name.value}`);
-      window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
-      status.textContent = `Opening your email app. If nothing appears, write to ${EMAIL}.`;
-      status.classList.add('success');
+      // If no credentials, fallback or just notify for easy insertion
+      console.warn('EmailJS credentials are not configured. Please update js/contact.js.');
+      status.textContent = 'EmailJS not configured. Please update credentials or email me directly.';
+      status.classList.add('error');
+      button.disabled = false;
+      button.innerHTML = originalButtonHTML;
       return;
     }
-
-    button.disabled = true;
-    button.innerHTML = 'Sending…';
 
     try {
       await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form);
-      status.textContent = 'Thank you — your message has been sent.';
+      status.textContent = "Message sent successfully. I'll get back to you soon.";
       status.classList.add('success');
       form.reset();
-    } catch {
-      status.textContent = `Something went wrong. Please email ${EMAIL} directly.`;
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      status.textContent = "Unable to send the message right now. Please try again or email me directly.";
       status.classList.add('error');
     } finally {
+      // Re-enable button and restore text
       button.disabled = false;
-      button.innerHTML = 'Send Message <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>';
+      button.innerHTML = originalButtonHTML;
     }
   });
 })();
